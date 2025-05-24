@@ -124,7 +124,7 @@ public class Dataset {
 
             while(left<=right){
                 middle= (left + right)/2;
-                int nameCopy = data.get(middle).getCategory();
+                String nameCopy = data.get(middle).getCategory();
 
                 index = nameCopy.compareTo(category);
 
@@ -151,7 +151,7 @@ public class Dataset {
             }
             aux++;
 
-            while(aux < data.size()-1 && data.get(aux).getCategory().equals(category)){
+            while(aux < data.size() && data.get(aux).getCategory().equals(category)){
                 games.add(this.data.get(aux));
                 aux++;
             }
@@ -204,7 +204,7 @@ public class Dataset {
             }
             index++;
 
-            while(index<data.size()-1 && data.get(index).getQuality() == quality){
+            while(index<data.size() && data.get(index).getQuality() == quality){
                 games.add(this.data.get(index));
                 index++;
             }
