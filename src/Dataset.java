@@ -144,7 +144,7 @@ public class Dataset {
                 return games;
             }
 
-            aux= middle;
+            int aux= middle;
 
             while(aux>=0 && data.get(aux).getCategory().equals(category)) ){
                 aux--;
