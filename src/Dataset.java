@@ -174,5 +174,77 @@ public class Dataset {
 
     }
 
+    public ArrayList<Game> getGamesByQuality(int quality){
+        ArrayList<Game> games = new ArrayList<>();
+
+        if("quality".equals(sortedByAttribute)){
+            int left = 0, right = data.size() - 1, middle =0;
+            boolean found = false;
+
+            while(left <= right){
+                middle = (left + right)/2;
+                if(data.get(middle).getQuality() == quality){
+                    found = true;
+                    break;
+                }else if(data.get(middle).getQuality() > quality){
+                    right = middle - 1;
+                }else{
+                    left = middle + 1;
+                }
+
+            }
+
+            if(!found){
+                return games;
+            }
+
+            int index = middle;
+            while(index>=0 && data.get(index).getQuality() == quality){
+                index--;
+            }
+            index++;
+
+            while(index<data.size()-1 && data.get(index).getQuality() == quality){
+                games.add(this.data.get(index));
+                index++;
+            }
+
+            return games;
+
+
+        }else{
+            for(Game info: data){
+                if(info.getQuality() == quality){
+                    games.add(info);
+                }
+
+            }
+            return games;
+
+        }
+
+
+    }
+
+    public void sortByAlgorithm(String algorithm, String attribute){
+
+        if(algorithm.equals("bubbleSort")){
+
+            
+
+        }else if(algorithm.equals("insertionSort")){
+
+        }else if(algorithm.equals("selectionSort")){
+
+        }else if(algorithm.equals("mergeSort")){
+
+        }else if(algorithm.equals("quickSort")){
+
+        }else{
+            Collections.sort(data);
+
+        }
+    }
+
 
 }
