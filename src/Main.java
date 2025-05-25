@@ -46,23 +46,24 @@ public class Main {
         Dataset dataset = new Dataset(data.generateRandomGames(1000000));
         // Medir búsqueda por precio (existente)
         int precioBuscado = dataset.data.get(data.random.nextInt(1000000)).getPrice();
-        medirBusqueda("getGamesByPrice", dataset, precioBuscado, 0);
+        medirBusqueda("getGamesByPrice","price", dataset, precioBuscado, 0);
 
         // Medir búsqueda por rango de precio (existente)
-        medirBusqueda("getGamesByPriceRange", dataset, 0, 70000);
+        medirBusqueda("getGamesByPriceRange", "price", dataset, 0, 70000);
 
         // Medir búsqueda por categoría (existente)
         String categoriaBuscada = dataset.data.get(data.random.nextInt(1000000)).getCategory();
-        medirBusqueda("getGamesByCategory", dataset, categoriaBuscada, 0);
+        medirBusqueda("getGamesByCategory", "category", dataset, categoriaBuscada, 0);
 
         // Medir búsqueda por categoría (existente)
         int calidadBuscada = dataset.data.get(data.random.nextInt(1000000)).getQuality();
-        medirBusqueda("getGamesByQuality", dataset, calidadBuscada, 0);
+        medirBusqueda("getGamesByQuality", "quality", dataset, calidadBuscada, 0);
     }
 
-    public static void medirBusqueda(String metodo, Dataset dataset, Object valor, Object valor2) {
+    public static void medirBusqueda(String metodo, String atribute, Dataset dataset, Object valor, Object valor2) {
         long inicio, fin;
         //Búsqueda lineal
+        Collections.shuffle(dataset.data);
         dataset.sortedByAttribute = "";
         inicio = System.currentTimeMillis();
         switch (metodo) {
@@ -83,7 +84,8 @@ public class Main {
         System.out.printf(metodo + " (busqueda lineal): " + (fin - inicio) + "ms\n");
 
         // Búsqueda binaria
-        dataset.sortedByAttribute = "price";
+        dataset.sortByAlgorithm("", atribute);
+        dataset.sortedByAttribute = atribute;
         inicio = System.currentTimeMillis();
         switch (metodo) {
             case "getGamesByPrice":
