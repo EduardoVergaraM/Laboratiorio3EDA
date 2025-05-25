@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.*;
 
 public class Dataset {
@@ -15,15 +14,14 @@ public class Dataset {
         int left = 0, right = data.size() - 1, middle = 0;
         boolean found = false;
 
-        if ("price".equals(sortedByAttribute)) {
-
+        if (sortedByAttribute.equals("price")) {
             while (left <= right) { //busqueda binaria
                 middle = (left + right) / 2;
 
-                if (this.data.get(middle).getPrice() == price) {
+                if (data.get(middle).getPrice() == price) {
                     found = true;
                     break;
-                } else if (this.data.get(middle).getPrice() > price) {
+                } else if (data.get(middle).getPrice() > price) {
                     right = middle - 1;
                 } else {
                     left = middle + 1;
@@ -36,23 +34,23 @@ public class Dataset {
 
             int index = middle;
 
-            while (index >= 0 && this.data.get(index).getPrice() == price) {//recorre hasta la izquierda pa encontrar la primera posicion
+            while (index >= 0 && data.get(index).getPrice() == price) { //recorre hasta la izquierda pa encontrar la primera posicion
                 index--;
             }
 
             index++;
 
-            while (index < data.size() && this.data.get(index).getPrice() == price) {//agrega juegos desde middle hacia la derecha
-                games.add(this.data.get(index));
+            while (index < data.size() && data.get(index).getPrice() == price) { //agrega juegos desde middle hacia la derecha
+                games.add(data.get(index));
                 index++;
             }
 
             return games;
 
         }else {
-            for (Game info: data) {//agregar juegos en orden lineal
-                if (info.getPrice() == price) {
-                    games.add(info);
+            for (Game game: data) { //agregar juegos en orden lineal
+                if (game.getPrice() == price) {
+                    games.add(game);
                 }
             }
 
@@ -64,13 +62,13 @@ public class Dataset {
     public ArrayList<Game> getGamesByPriceRange(int lowerPrice, int highPrice){
         ArrayList<Game> games = new ArrayList<>();
 
-        if("price".equals(sortedByAttribute)){
-            int left = 0, right = data.size() - 1, middle = 0, Start= -1;
+        if (sortedByAttribute.equals("price")){
+            int left = 0, right = data.size() - 1, middle, start = -1;
 
             while (left <= right) {
                 middle = (left + right) / 2;
                 if(data.get(middle).getPrice() >= lowerPrice){
-                    Start= middle;
+                    start = middle;
                     right = middle -1;
 
                 }else{
@@ -78,7 +76,7 @@ public class Dataset {
                 }
             }
 
-            left= 0; right = data.size()-1;
+            left = 0; right = data.size()-1;
             int End = -1;
 
             while(left <=right){
@@ -93,15 +91,14 @@ public class Dataset {
                 }
             }
 
-            if(Start == -1 || End == -1 ){
+            if(start == -1 || End == -1 ){
                 return games;
             }
 
-            for(int i = Start; i <= End; i++){
+            for(int i = start; i <= End; i++){
                 games.add(data.get(i));
             }
             return games;
-
 
         }else{
 
@@ -118,8 +115,8 @@ public class Dataset {
     public ArrayList<Game> getGamesByCategory(String category){
         ArrayList<Game> games = new ArrayList<>();
 
-        if("category".equals(sortedByAttribute)){
-            int left =0, right = data.size() - 1, middle = 0, index = 0;
+        if (sortedByAttribute.equals("category")) {
+            int left = 0, right = data.size() - 1, middle = 0, index = 0;
             boolean found = false;
 
             while(left<=right){
@@ -131,10 +128,10 @@ public class Dataset {
                 if(index ==0){
                     found = true;
                     break;
-                }else if( index <0){
+                } else if (index < 0){
                     left = middle +1;
 
-                }else{
+                } else {
                     right = middle -1;
                 }
 
@@ -144,9 +141,9 @@ public class Dataset {
                 return games;
             }
 
-            int aux= middle;
+            int aux = middle;
 
-            while(aux>=0 && data.get(aux).getCategory().equals(category)) ){
+            while(aux >= 0 && data.get(aux).getCategory().equals(category)) {
                 aux--;
             }
             aux++;
@@ -157,27 +154,20 @@ public class Dataset {
             }
             return games;
 
-
-
-
         }else{
-
             for(Game info : data){
                 if(info.getCategory().equals(category)){
                     games.add(info);
                 }
             }
             return games;
-
-
         }
-
     }
 
     public ArrayList<Game> getGamesByQuality(int quality){
         ArrayList<Game> games = new ArrayList<>();
 
-        if("quality".equals(sortedByAttribute)){
+        if (sortedByAttribute.equals("quality")){
             int left = 0, right = data.size() - 1, middle =0;
             boolean found = false;
 
@@ -220,31 +210,45 @@ public class Dataset {
 
             }
             return games;
-
         }
 
 
     }
 
-    public void sortByAlgorithm(String algorithm, String attribute){
+    public void sortByAlgorithm(String algorithm, String attribute) {
+        String validAttribute = Arrays.asList("price", "category", "quality").contains(attribute)
+                ? attribute : "price";
 
-        if(algorithm.equals("bubbleSort")){
-
-            
-
-        }else if(algorithm.equals("insertionSort")){
-
-        }else if(algorithm.equals("selectionSort")){
-
-        }else if(algorithm.equals("mergeSort")){
-
-        }else if(algorithm.equals("quickSort")){
-
-        }else{
-            Collections.sort(data);
-
+        switch (algorithm) {
+            case "bubbleSort":
+                SortingAlgorithms.bubbleSort(data, validAttribute);
+                break;
+            case "insertionSort":
+                SortingAlgorithms.insertionSort(data, validAttribute);
+                break;
+            case "selectionSort":
+                SortingAlgorithms.selectionSort(data, validAttribute);
+                break;
+            case "mergeSort":
+                SortingAlgorithms.mergeSort(data, validAttribute, 0, data.size() - 1);
+                break;
+            case "quickSort":
+                SortingAlgorithms.quickSort(data, validAttribute, 0, data.size() - 1);
+                break;
+            default: // Ordenamiento usando Collections.sort()
+                Comparator<Game> comparator;
+                switch (validAttribute) {
+                    case "category":
+                        comparator = Comparator.comparing(Game::getCategory);
+                        break;
+                    case "quality":
+                        comparator = Comparator.comparingInt(Game::getQuality);
+                        break;
+                    default: // "price" por defecto
+                        comparator = Comparator.comparingInt(Game::getPrice);
+                }
+                Collections.sort(data, comparator);
         }
+        sortedByAttribute = validAttribute;
     }
-
-
 }
