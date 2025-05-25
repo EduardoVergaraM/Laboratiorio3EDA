@@ -44,7 +44,6 @@ public class Main {
 
     public static void benchmarkBusqueda(GenerateData data) {
         Dataset dataset = new Dataset(data.generateRandomGames(1000000));
-        dataset.sortByAlgorithm("quickSort", "price");
         // Medir búsqueda por precio (existente)
         int precioBuscado = dataset.data.get(data.random.nextInt(1000000)).getPrice();
         medirBusqueda("getGamesByPrice", dataset, precioBuscado, 0);
@@ -63,9 +62,8 @@ public class Main {
 
     public static void medirBusqueda(String metodo, Dataset dataset, Object valor, Object valor2) {
         long inicio, fin;
-
-        // Búsqueda lineal
-        // Marcar como no ordenado
+        //Búsqueda lineal
+        dataset.sortedByAttribute = "";
         inicio = System.currentTimeMillis();
         switch (metodo) {
             case "getGamesByPrice":
@@ -84,9 +82,8 @@ public class Main {
         fin = System.currentTimeMillis();
         System.out.printf(metodo + " (busqueda lineal): " + (fin - inicio) + "ms\n");
 
-        // Búsqueda lineal
-        Collections.shuffle(dataset.data);
-        dataset.sortedByAttribute = "";
+        // Búsqueda binaria
+        dataset.sortedByAttribute = "price";
         inicio = System.currentTimeMillis();
         switch (metodo) {
             case "getGamesByPrice":
