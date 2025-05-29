@@ -46,16 +46,16 @@ public class GenerateData {
 
     public static void saveToCSV(ArrayList<Game> games) {
         try {
-            FileWriter graph = new FileWriter("Graph.csv");
-            graph.write("Nombre,Categoria,Precio,Calidad\n");
+            FileWriter data = new FileWriter("GenerateData1M.txt");
+            data.write("Nombre,Categoria,Precio,Calidad\n");
             for (Game game : games) {
-                graph.write(String.format("%s,%s,%d,%d\n",
+                data.write(String.format("%s,%s,%d,%d\n",
                         game.getName(),
                         game.getCategory(),
                         game.getPrice(),
                         game.getQuality()));
             }
-            graph.close();
+            data.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -63,7 +63,11 @@ public class GenerateData {
 
     public static void main (String[] args) {
        GenerateData generateData = new GenerateData();
-       ArrayList<Game> games = generateData.generateRandomGames(5);
+       long startTime = System.currentTimeMillis();
+       ArrayList<Game> games = generateData.generateRandomGames(1000000);
+       long endTime = System.currentTimeMillis();
+       long elapsedTime = endTime - startTime;
+       System.out.println("Elapsed time: " + elapsedTime + " ms");
        for (Game game : games) {
            System.out.println("-------------------------------");
            System.out.println("Name: " + game.getName());

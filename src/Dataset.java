@@ -28,19 +28,19 @@ public class Dataset {
                 }
             }
 
-            if (!found) { //comprobar que el precio se encuentra
+            if (!found) {
                 return games;
             }
 
             int index = middle;
 
-            while (index >= 0 && data.get(index).getPrice() == price) { //recorre hasta la izquierda pa encontrar la primera posicion
+            while (index >= 0 && data.get(index).getPrice() == price) {
                 index--;
             }
 
             index++;
 
-            while (index < data.size() && data.get(index).getPrice() == price) { //agrega juegos desde middle hacia la derecha
+            while (index < data.size() && data.get(index).getPrice() == price) {
                 games.add(data.get(index));
                 index++;
             }
@@ -48,7 +48,7 @@ public class Dataset {
             return games;
 
         }else {
-            for (Game game: data) { //agregar juegos en orden lineal
+            for (Game game: data) {  // búsqueda lineal
                 if (game.getPrice() == price) {
                     games.add(game);
                 }
@@ -56,7 +56,6 @@ public class Dataset {
 
             return games;
         }
-
     }
 
     public ArrayList<Game> getGamesByPriceRange(int lowerPrice, int highPrice){
@@ -211,8 +210,6 @@ public class Dataset {
             }
             return games;
         }
-
-
     }
 
     public void sortByAlgorithm(String algorithm, String attribute) {
@@ -235,6 +232,14 @@ public class Dataset {
             case "quickSort":
                 SortingAlgorithms.quickSort(data, validAttribute, 0, data.size() - 1);
                 break;
+            case "countingSort":
+                if (!validAttribute.equals("quality")) {
+                    System.out.println("Counting Sort solo se puede usar con el atributo 'quality'.");
+                    return;
+                }
+                this.sortedByAttribute = "quality";
+                SortingAlgorithms.countingSort(data);
+                break;
             default: // Ordenamiento usando Collections.sort()
                 Comparator<Game> comparator;
                 switch (validAttribute) {
@@ -250,5 +255,17 @@ public class Dataset {
                 Collections.sort(data, comparator);
         }
         sortedByAttribute = validAttribute;
+    }
+
+    public static void main(String[] args) {
+        GenerateData data = new GenerateData();
+        ArrayList<Game> games = data.generateRandomGames(100);
+        Dataset dataset = new Dataset(games);
+        dataset.sortByAlgorithm("countingSort", "quality");
+        int counter = 0;
+        for (Game info : games) {
+            System.out.println(counter + ". Name: " + info.getName() + " - Quality: " + info.getQuality());
+            counter++;
+        }
     }
 }

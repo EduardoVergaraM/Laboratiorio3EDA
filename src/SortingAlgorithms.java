@@ -90,6 +90,24 @@ public class SortingAlgorithms {
         return i + 1;
     }
 
+    public static void countingSort(ArrayList<Game> data) {
+        int max = 100;
+        ArrayList<ArrayList<Game>> count = new ArrayList<>(max + 1);
+
+        for (int i = 0; i <= max; i++) {
+            count.add(new ArrayList<>());
+        }
+
+        for (Game game : data) {
+            count.get(game.getQuality()).add(game);
+        }
+
+        data.clear();
+        for (ArrayList<Game> bucket : count) {
+            data.addAll(bucket);
+        }
+    }
+
     // Método para comparar juegos
     public static int compare(Game a, Game b, String attribute) {
         return switch (attribute) {
